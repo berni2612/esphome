@@ -18,7 +18,7 @@ CONFIG_SCHEMA = (
     .extend(uart.UART_DEVICE_SCHEMA)
 )
 
-cg.add_define("KNX_NO_PRINT")
+cg.add_build_flag("-DKNX_NO_PRINT")
 
 
 async def to_code(config):
