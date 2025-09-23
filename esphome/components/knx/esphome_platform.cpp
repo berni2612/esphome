@@ -1,9 +1,14 @@
 #include "esphome_platform.h"
 
+#include "esphome/core/preferences.h"
+
 namespace esphome {
 namespace knx {
 
-ESPHomePlatform::ESPHomePlatform(esphome::uart::UARTDevice *uart) : uart_(uart) {}
+ESPHomePlatform::ESPHomePlatform(uint32_t objectIdHash, esphome::uart::UARTDevice *uart) : uart_(uart) {
+  this->pref_ = global_preferences->make_preference<EEPROMBuffer>(objectIdHash);
+  this->pref_.load(&this->_eepromBuffer);
+}
 
 void ESPHomePlatform::restart() {
   // Implement restart logic using ESPHome API
@@ -45,6 +50,15 @@ size_t ESPHomePlatform::readBytesUart(uint8_t *buffer, size_t length) {
     return length;
   return 0;
 }
+
+uint8_t *ESPHomePlatform::getEepromBuffer(uint16_t size) {
+  if (size > KNX_FLASH_SIZE) {
+    return nullptr;
+  }
+  return this->_eepromBuffer.data;
+}
+
+void ESPHomePlatform::commitToEeprom() { this->pref_.save(&this->_eepromBuffer); }
 
 }  // namespace knx
 }  // namespace esphome

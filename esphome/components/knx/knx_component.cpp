@@ -13,7 +13,8 @@ static const char *TAG = "knx.component";
 void KnxComponent::setup() {
   // Initialize the KNX platform
   if (this->platform_ == nullptr) {
-    this->platform_ = new ESPHomePlatform(this);
+    static constexpr uint32_t PREF_KEY = 0xA1B2C3D4;
+    this->platform_ = new ESPHomePlatform(PREF_KEY, this);
   }
   if (this->bau_ == nullptr) {
     this->bau_ = new Bau07B0(*this->platform_);

@@ -2,12 +2,14 @@
 
 #include "esphome/components/uart/uart.h"
 
+#include "esphome/core/preferences.h"
+
 namespace esphome {
 namespace knx {
 
 class ESPHomePlatform : public Platform {
  public:
-  ESPHomePlatform(esphome::uart::UARTDevice *uart);
+  ESPHomePlatform(uint32_t objectIdHash, esphome::uart::UARTDevice *uart);
 
   void restart() override;
   void fatalError() override;
@@ -19,8 +21,17 @@ class ESPHomePlatform : public Platform {
   int readUart() override;
   size_t readBytesUart(uint8_t *buffer, size_t length) override;
 
+  uint8_t *getEepromBuffer(uint16_t size) override;
+  void commitToEeprom() override;
+
  protected:
+  struct alignas(4) EEPROMBuffer {
+    uint8_t data[KNX_FLASH_SIZE];
+  };
+
   esphome::uart::UARTDevice *uart_;
+  esphome::ESPPreferenceObject pref_;
+  EEPROMBuffer _eepromBuffer{};
 };
 
 }  // namespace knx
