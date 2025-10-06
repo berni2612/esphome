@@ -1,6 +1,7 @@
 #include "esphome_platform.h"
 
 #include "esphome/core/preferences.h"
+#include "esphome/core/application.h"
 
 namespace esphome {
 namespace knx {
@@ -11,7 +12,8 @@ ESPHomePlatform::ESPHomePlatform(uint32_t objectIdHash, esphome::uart::UARTDevic
 }
 
 void ESPHomePlatform::restart() {
-  // Implement restart logic using ESPHome API
+  // Implement restart using ESPHome API
+  App.safe_reboot();
 }
 
 void ESPHomePlatform::fatalError() {
