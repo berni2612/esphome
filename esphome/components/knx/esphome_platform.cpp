@@ -42,13 +42,13 @@ size_t ESPHomePlatform::writeUart(const uint8_t *buffer, size_t size) {
 
 int ESPHomePlatform::readUart() {
   uint8_t data;
-  if (!this->uart_->read_byte(&data))
+  if (!this->uart_->available() || !this->uart_->read_byte(&data))
     return -1;
   return data;
 }
 
 size_t ESPHomePlatform::readBytesUart(uint8_t *buffer, size_t length) {
-  if (this->uart_->read_array(buffer, length))
+  if (this->uart_->available() >= length && this->uart_->read_array(buffer, length))
     return length;
   return 0;
 }

@@ -77,6 +77,19 @@ void KnxComponent::knx_loop(void *arg) {
   while (true) {
     self->bau_->loop();
 
+    if (millis() % 1000 == 0) {
+      // Log every second
+      if (self->bau_->enabled()) {
+        if (self->bau_->configured()) {
+          ESP_LOGI(TAG, "KNX running with address %u", self->bau_->deviceObject().individualAddress());
+        } else {
+          ESP_LOGW(TAG, "KNX not yet configured");
+        }
+      } else {
+        ESP_LOGW(TAG, "KNX not enabled");
+      }
+    }
+
     // sleep for 1ms
     delay(1);
   }
