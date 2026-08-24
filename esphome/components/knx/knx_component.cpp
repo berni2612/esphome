@@ -1,8 +1,5 @@
 #include "knx_component.h"
 
-#include "esphome_platform.h"
-#include "bau07B0.h"
-
 #include "esphome/core/log.h"
 
 namespace esphome {
@@ -14,10 +11,10 @@ void KnxComponent::setup() {
   // Initialize the KNX platform
   if (this->platform_ == nullptr) {
     static constexpr uint32_t PREF_KEY = 0xA1B2C3D4;
-    this->platform_ = new ESPHomePlatform(PREF_KEY, this);
+    this->platform_ = new (this->platform_memory_) ESPHomePlatform(PREF_KEY, this);
   }
   if (this->bau_ == nullptr) {
-    this->bau_ = new Bau07B0(*this->platform_);
+    this->bau_ = new (this->bau_memory_)::Bau07B0(*this->platform_);
   }
 
   this->bau_->deviceObject().version(0x0000);  // Version 0.0

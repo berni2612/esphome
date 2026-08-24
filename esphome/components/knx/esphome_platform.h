@@ -1,4 +1,6 @@
-#include "platform.h"
+#pragma once
+
+#include <knx/platform.h>
 
 #include "esphome/components/uart/uart.h"
 
@@ -7,7 +9,7 @@
 namespace esphome {
 namespace knx {
 
-class ESPHomePlatform : public Platform {
+class ESPHomePlatform : public ::Platform {
  public:
   ESPHomePlatform(uint32_t objectIdHash, esphome::uart::UARTDevice *uart);
 
@@ -21,7 +23,7 @@ class ESPHomePlatform : public Platform {
   int readUart() override;
   size_t readBytesUart(uint8_t *buffer, size_t length) override;
 
-  uint8_t *getEepromBuffer(uint16_t size) override;
+  uint8_t *getEepromBuffer(uint32_t size) override;
   void commitToEeprom() override;
 
  protected:

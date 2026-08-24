@@ -152,3 +152,4 @@ sdkconfig.*
 /dependencies.lock
 
 api-docs/
+.devcontainer/devcontainer-lock.json

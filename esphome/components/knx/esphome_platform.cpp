@@ -53,7 +53,7 @@ size_t ESPHomePlatform::readBytesUart(uint8_t *buffer, size_t length) {
   return 0;
 }
 
-uint8_t *ESPHomePlatform::getEepromBuffer(uint16_t size) {
+uint8_t *ESPHomePlatform::getEepromBuffer(uint32_t size) {
   if (size > KNX_FLASH_SIZE) {
     return nullptr;
   }

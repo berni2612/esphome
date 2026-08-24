@@ -21,7 +21,12 @@ CONFIG_SCHEMA = (
     .extend(uart.UART_DEVICE_SCHEMA)
 )
 
-cg.add_build_flag("-DKNX_NO_PRINT")
+
+cg.add_library("knx", None, "https://github.com/berni2612/knx.git#esphome")
+cg.add_build_flag("-D MASK_VERSION=0x07B0")
+cg.add_build_flag("-D KNX_FLASH_SIZE=1024")
+cg.add_build_flag("-D KNX_NO_PRINT")
+cg.add_build_flag("-D KNX_NO_AUTOMATIC_GLOBAL_INSTANCE")
 
 
 async def to_code(config):

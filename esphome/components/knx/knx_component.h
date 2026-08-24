@@ -1,7 +1,7 @@
 #pragma once
 
-#include "bau_systemB.h"
-#include "platform.h"
+#include <knx/bau07B0.h>
+#include "esphome_platform.h"
 
 #include "esphome/core/component.h"
 #include "esphome/components/uart/uart.h"
@@ -29,8 +29,11 @@ class KnxComponent : public uart::UARTDevice, public Component {
  protected:
   static void knx_loop(void *arg);
 
-  Platform *platform_{nullptr};
-  BauSystemB *bau_{nullptr};
+  ::Platform *platform_{nullptr};
+  ::BauSystemB *bau_{nullptr};
+
+  alignas(ESPHomePlatform) uint8_t platform_memory_[sizeof(ESPHomePlatform)];
+  alignas(::Bau07B0) uint8_t bau_memory_[sizeof(::Bau07B0)];
 
   uint32_t startup_time_{5000};  // ms
 };

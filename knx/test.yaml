@@ -1,0 +1,21 @@
+esphome:
+  name: knx-router
+
+esp32:
+  variant: esp32c6
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+
+uart:
+  id: uart_knx
+  tx_pin: GPIO17
+  rx_pin: GPIO16
+  baud_rate: 9600
+  data_bits: 8
+  parity: EVEN
+  stop_bits: 1
+
+knx:
+  id: my_knx_stack
+  uart_id: uart_knx
