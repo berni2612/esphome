@@ -22,7 +22,7 @@ CONFIG_SCHEMA = (
 )
 
 
-cg.add_library("knx", None, "https://github.com/berni2612/knx.git#esphome")
+cg.add_library("knx", None, "https://github.com/berni2612/knx.git#master")
 cg.add_build_flag("-D MASK_VERSION=0x07B0")
 cg.add_build_flag("-D KNX_FLASH_SIZE=1024")
 cg.add_build_flag("-D KNX_NO_PRINT")

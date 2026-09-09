@@ -1,0 +1,62 @@
+esphome:
+  name: knx-router-default
+
+esp32:
+  variant: esp32c6
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+
+uart:
+  id: uart_knx
+  tx_pin: GPIO17
+  rx_pin: GPIO16
+  baud_rate: 19200
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1
+
+i2c:
+  sda: GPIO20
+  scl: GPIO21
+  scan: true
+
+knx:
+  id: my_knx_stack
+  uart_id: uart_knx
+  kos:
+    - group_object: 0 # optional
+      internal_id: bme280_temperature
+      dpt: 9
+    - group_object: 1 # optional
+      internal_id: bme280_pressure
+      dpt: 9
+    - group_object: 2 # optional
+      dpt: 9
+      on_state:
+        then:
+          - lambda: |-
+              ESP_LOGD("knx", "Received value for group object 2: %f", x);
+              id(template_temperature).publish_state(x);
+
+sensor:
+  - platform: bme280
+    i2c_id: default
+    temperature:
+      id: bme280_temperature
+      name: "BME280 Temperature"
+      oversampling: 16x
+    pressure:
+      name: "BME280 Pressure"
+    humidity:
+      name: "BME280 Humidity"
+    update_interval: 60s
+
+  - platform: template
+    name: "Template Temperature"
+    id: template_temperature
+    unit_of_measurement: "°C"
+    accuracy_decimals: 2
+    lambda: |-
+      return id(bme280_temperature).state;
+    update_interval: 60s
